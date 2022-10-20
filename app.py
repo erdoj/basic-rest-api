@@ -88,6 +88,10 @@ def create_app(db_url=None):
         )
 
 
+    with app.app_context():
+        db.create_all()
+
+
     api.register_blueprint(ItemBlueprint)
     api.register_blueprint(StoreBlueprint)
     api.register_blueprint(TagBlueprint)
