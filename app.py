@@ -1,13 +1,12 @@
 import os
-
 from flask import Flask, jsonify
 from flask_smorest import Api
 from flask_jwt_extended import JWTManager
 from flask_migrate import Migrate
+from dotenv import load_dotenv
 
 from db import db
 from blocklist import BLOCKLIST
-import models
 
 from resources.item import blp as ItemBlueprint
 from resources.store import blp as StoreBlueprint
@@ -17,6 +16,7 @@ from resources.user import blp as UserBlueprint
 
 def create_app(db_url=None):
     app = Flask(__name__)
+    load_dotenv()
 
     app.config["PROPAGATE_EXCEPTIONS"] = True
     app.config["API_TITLE"] = "Stores REST API"
@@ -31,7 +31,7 @@ def create_app(db_url=None):
     migrate = Migrate(app, db)
     api = Api(app)
 
-    app.config["JWT_SECRET_KEY"] = "278271926005670203238002357916483991047"
+    app.config["JWT_SECRET_KEY"] = "cica"
     jwt = JWTManager(app)
 
     @jwt.token_in_blocklist_loader
@@ -86,10 +86,6 @@ def create_app(db_url=None):
             ),
             401,
         )
-
-
-    with app.app_context():
-        db.create_all()
 
 
     api.register_blueprint(ItemBlueprint)
